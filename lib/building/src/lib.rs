@@ -50,7 +50,7 @@ impl Plugin for SimulatorBuildingPlugin {
 }
 
 fn startup(
-    mut commands: Commands,
+    mut _commands: Commands,
     mut state: ResMut<SimulatorBuildingState>,
 ) {
     // ground floor
@@ -60,14 +60,14 @@ fn startup(
 }
 
 fn update(
-    mut commands: Commands,
+    mut _commands: Commands,
     mut state: ResMut<SimulatorBuildingState>,
     mut events: EventReader<FloorEvent>,
 ) {
     for event in events.read() {
         match event {
             FloorEvent::New(sign, floor_offset) => {
-                let floor = match sign {
+                let _floor = match sign {
                     Sign::Positive => {
                         state.floors.insert(*floor_offset, Floor::default_ground_floor());
                     },
@@ -77,7 +77,7 @@ fn update(
                 };
             },
             FloorEvent::Customize(floor_index, customize_floor_event) => {
-                let floor = state.floors.get_mut(floor_index).unwrap();
+                let _floor = state.floors.get_mut(floor_index).unwrap();
                 match customize_floor_event {
                     CustomizeFloorEvent::Ceiling => {
                         // customize the ceiling

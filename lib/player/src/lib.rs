@@ -1,5 +1,5 @@
 use avian3d::{math::*, prelude::*};
-use bevy::{core_pipeline::{bloom::BloomSettings, tonemapping::Tonemapping}, input::mouse::MouseMotion, pbr::NotShadowCaster, prelude::*, render::view::RenderLayers};
+use bevy::{core_pipeline::{bloom::BloomSettings, tonemapping::Tonemapping}, input::mouse::MouseMotion, prelude::*};
 
 pub mod prelude {
     pub use crate::PlayerControllerPlugin;
@@ -50,8 +50,7 @@ impl Plugin for PlayerControllerPlugin {
 }
 
 fn setup(
-    mut commands: Commands,
-    state: Res<PlayerControllerState>,
+    mut commands: Commands
 ) {
     commands
         .spawn((
