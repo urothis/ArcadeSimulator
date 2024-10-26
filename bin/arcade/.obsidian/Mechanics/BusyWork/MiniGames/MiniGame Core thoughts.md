@@ -1,4 +1,4 @@
-Technical requirements [[MVP]]:
+Technical requirements [[Mechanics/Building/MVP]]:
 Screen shader: https://godotshaders.com/shader/realistic-crt-shader/
 Render the minigame in this fashion so we can shader ontop of it https://bevyengine.org/examples/3d-rendering/render-to-texture/ 
 
