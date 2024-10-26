@@ -1,18 +1,22 @@
 use avian3d::{math::*, prelude::*};
-use bevy::{core_pipeline::{bloom::BloomSettings, tonemapping::Tonemapping}, input::mouse::MouseMotion, prelude::*};
+use bevy::{
+    core_pipeline::{bloom::BloomSettings, tonemapping::Tonemapping},
+    input::mouse::MouseMotion,
+    prelude::*,
+};
 
 pub mod prelude {
-    pub use crate::PlayerControllerPlugin;
-    pub use crate::CharacterControllerBundle;
-    pub use crate::MovementBundle;
-    pub use crate::MovementAction;
     pub use crate::CharacterController;
-    pub use crate::Grounded;
-    pub use crate::MovementAcceleration;
-    pub use crate::MovementDampingFactor;
-    pub use crate::JumpImpulse;
+    pub use crate::CharacterControllerBundle;
     pub use crate::ControllerGravity;
+    pub use crate::Grounded;
+    pub use crate::JumpImpulse;
     pub use crate::MaxSlopeAngle;
+    pub use crate::MovementAcceleration;
+    pub use crate::MovementAction;
+    pub use crate::MovementBundle;
+    pub use crate::MovementDampingFactor;
+    pub use crate::PlayerControllerPlugin;
     pub use crate::DEFAULT_RENDER_LAYER;
     pub use crate::VIEW_MODEL_RENDER_LAYER;
 }
@@ -25,8 +29,7 @@ pub struct PlayerControllerState;
 
 impl Plugin for PlayerControllerPlugin {
     fn build(&self, app: &mut App) {
-        app
-            .add_event::<MovementAction>()
+        app.add_event::<MovementAction>()
             .insert_resource(PlayerControllerState)
             .add_systems(Startup, setup)
             .add_systems(
@@ -42,16 +45,11 @@ impl Plugin for PlayerControllerPlugin {
                 )
                     .chain(),
             )
-            .add_systems(
-                PostProcessCollisions,
-                kinematic_controller_collisions,
-            );
+            .add_systems(PostProcessCollisions, kinematic_controller_collisions);
     }
 }
 
-fn setup(
-    mut commands: Commands
-) {
+fn setup(mut commands: Commands) {
     commands
         .spawn((
             Player,
@@ -72,14 +70,9 @@ fn setup(
                         ..default()
                     },
                     tonemapping: Tonemapping::TonyMcMapface,
-                    //projection: PerspectiveProjection {
-                    //    fov: 90.0_f32.to_radians(),
-                    //    ..default()
-                    //}
-                    //.into(),
                     ..default()
                 },
-                BloomSettings::OLD_SCHOOL
+                BloomSettings::OLD_SCHOOL,
             ));
         });
 }

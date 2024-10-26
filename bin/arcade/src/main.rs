@@ -1,9 +1,9 @@
 use avian3d::{prelude::*, PhysicsPlugins};
 use bevy::{color::palettes::tailwind, input::common_conditions::input_toggle_active, prelude::*};
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use building::prelude::*;
 use iyes_perf_ui::{entries::PerfUiBundle, PerfUiPlugin};
 use player::PlayerControllerPlugin;
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 fn main() {
     App::new()
@@ -17,7 +17,7 @@ fn main() {
             bevy::diagnostic::FrameTimeDiagnosticsPlugin,
             bevy::diagnostic::EntityCountDiagnosticsPlugin,
             bevy::diagnostic::SystemInformationDiagnosticsPlugin,
-            PerfUiPlugin
+            PerfUiPlugin,
         ))
         .add_plugins(
             WorldInspectorPlugin::default().run_if(input_toggle_active(true, KeyCode::Escape)),
@@ -32,7 +32,6 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-
     // cube
     commands.spawn(PbrBundle {
         mesh: meshes.add(Cuboid::new(1.0, 1.0, 1.0)),
@@ -52,8 +51,9 @@ fn setup(
         transform: Transform::from_xyz(8.0, 16.0, 8.0),
         ..default()
     });
-    commands.spawn((PbrBundle {
-        mesh: meshes.add(Plane3d::default().mesh().size(50.0, 50.0).subdivisions(10)),
+    commands.spawn((
+        PbrBundle {
+            mesh: meshes.add(Plane3d::default().mesh().size(50.0, 50.0).subdivisions(10)),
             material: materials.add(Color::from(tailwind::GRAY_300)),
             transform: Transform {
                 translation: Vec3::new(0.0, -1.0, 0.0),
@@ -62,7 +62,7 @@ fn setup(
             ..default()
         },
         RigidBody::Static,
-        ColliderConstructor::ConvexHullFromMesh
+        ColliderConstructor::ConvexHullFromMesh,
     ));
 
     commands.spawn(PerfUiBundle::default());

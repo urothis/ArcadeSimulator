@@ -1,6 +1,9 @@
-use std::process::Command;
+use crate::{
+    constants::{App, Target},
+    run_command,
+};
 use clap::Args;
-use crate::{constants::{App, Target}, run_command};
+use std::process::Command;
 
 #[derive(Debug, Args)]
 pub struct BuildArgs {
@@ -13,21 +16,18 @@ pub struct BuildArgs {
 }
 
 impl BuildArgs {
-    pub fn run(
-        &self,
-        workspace_path: String
-    ) -> color_eyre::Result<()> {
+    pub fn run(&self, workspace_path: String) -> color_eyre::Result<()> {
         let mut command = Command::new("cargo");
         let path = format!("{}/bin/{}", &workspace_path, self.target);
-        let mut args: Vec<String> = vec![
-            "build".to_string(),
-            "--release".to_string()
-        ];
+        let mut args: Vec<String> = vec!["build".to_string(), "--release".to_string()];
 
         if self.artifact {
             let target = self.target.clone();
             let platform = self.platform.clone();
-            let build_path = format!("--target-dir={}/dist/{}/{}", &workspace_path, &target, &platform);
+            let build_path = format!(
+                "--target-dir={}/dist/{}/{}",
+                &workspace_path, &target, &platform
+            );
             args.push(build_path);
         }
 
@@ -35,13 +35,13 @@ impl BuildArgs {
             App::Desktop => {
                 command.args(&args).current_dir(&path);
                 run_command(command)?;
-            },
+            }
             App::Wasm => {
                 args.push("--target".to_string());
                 args.push("wasm32-unknown-unknown".to_string());
                 command.args(&args).current_dir(&path);
                 run_command(command)?;
-            },
+            }
         }
         Ok(())
     }
