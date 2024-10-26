@@ -1,7 +1,7 @@
 use avian3d::{prelude::*, PhysicsPlugins};
 use bevy::{color::palettes::tailwind, input::common_conditions::input_toggle_active, prelude::*};
 use building::prelude::*;
-use iyes_perf_ui::entries::PerfUiBundle;
+use iyes_perf_ui::{entries::PerfUiBundle, PerfUiPlugin};
 use player::PlayerControllerPlugin;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
@@ -14,6 +14,10 @@ fn main() {
             PhysicsDebugPlugin::default(),
             SimulatorBuildingPlugin,
             PlayerControllerPlugin,
+            bevy::diagnostic::FrameTimeDiagnosticsPlugin,
+            bevy::diagnostic::EntityCountDiagnosticsPlugin,
+            bevy::diagnostic::SystemInformationDiagnosticsPlugin,
+            PerfUiPlugin
         ))
         .add_plugins(
             WorldInspectorPlugin::default().run_if(input_toggle_active(true, KeyCode::Escape)),
