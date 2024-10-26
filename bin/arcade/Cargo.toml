@@ -4,5 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+avian3d = { workspace = true }
 bevy = { workspace = true }
+bevy-inspector-egui = "0.27.0"
 building = { path = "../../lib/building" }
+iyes_perf_ui = "0.3.0"
+player = { path = "../../lib/player" }

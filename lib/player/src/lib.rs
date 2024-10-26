@@ -1,5 +1,5 @@
 use avian3d::{math::*, prelude::*};
-use bevy::{color::palettes::tailwind, core_pipeline::{bloom::BloomSettings, tonemapping::Tonemapping}, input::mouse::MouseMotion, pbr::NotShadowCaster, prelude::*, render::view::RenderLayers};
+use bevy::{core_pipeline::{bloom::BloomSettings, tonemapping::Tonemapping}, input::mouse::MouseMotion, pbr::NotShadowCaster, prelude::*, render::view::RenderLayers};
 
 pub mod prelude {
     pub use crate::PlayerControllerPlugin;
@@ -17,13 +17,17 @@ pub mod prelude {
     pub use crate::VIEW_MODEL_RENDER_LAYER;
 }
 
-#[derive(Debug, Default, Clone, Eq, PartialEq, Hash)]
+#[derive(Default, Clone)]
 pub struct PlayerControllerPlugin;
+
+#[derive(Default, Clone, Resource)]
+pub struct PlayerControllerState;
 
 impl Plugin for PlayerControllerPlugin {
     fn build(&self, app: &mut App) {
         app
             .add_event::<MovementAction>()
+            .insert_resource(PlayerControllerState)
             .add_systems(Startup, setup)
             .add_systems(
                 Update,
@@ -47,12 +51,8 @@ impl Plugin for PlayerControllerPlugin {
 
 fn setup(
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
+    state: Res<PlayerControllerState>,
 ) {
-    let arm = meshes.add(Cuboid::new(0.1, 0.1, 0.5));
-    let arm_material = materials.add(Color::from(tailwind::TEAL_200));
-
     commands
         .spawn((
             Player,
@@ -80,49 +80,7 @@ fn setup(
                     .into(),
                     ..default()
                 },
-                BloomSettings::NATURAL,
-                //FogSettings {
-                //    color: Color::BLACK,
-                //    falloff: FogFalloff::Linear {
-                //        start: 5.0,
-                //        end: 20.0,
-                //    },
-                //    ..default()
-                //}
-            ));
-
-            // Spawn view model camera.
-            parent.spawn((
-                Camera3dBundle {
-                    camera: Camera {
-                        hdr: true,
-                        order: 1,
-                        ..default()
-                    },
-                    tonemapping: Tonemapping::TonyMcMapface,
-                    projection: PerspectiveProjection {
-                        fov: 70.0_f32.to_radians(),
-                        ..default()
-                    }
-                    .into(),
-                    ..default()
-                },
-                // Only render objects belonging to the view model.
-                RenderLayers::layer(VIEW_MODEL_RENDER_LAYER),
-            ));
-
-            // Spawn the player's right arm.
-            parent.spawn((
-                MaterialMeshBundle {
-                    mesh: arm,
-                    material: arm_material,
-                    transform: Transform::from_xyz(0.2, -0.1, -0.25),
-                    ..default()
-                },
-                // Ensure the arm is only rendered by the view model camera.
-                RenderLayers::layer(VIEW_MODEL_RENDER_LAYER),
-                // The arm is free-floating, so shadows would look weird.
-                NotShadowCaster,
+                BloomSettings::OLD_SCHOOL
             ));
         });
 }
@@ -132,7 +90,6 @@ struct Player;
 
 #[derive(Debug, Component)]
 struct WorldModelCamera;
-
 
 /// Used implicitly by all entities without a `RenderLayers` component.
 /// Our world model camera and all objects other than the player are on this layer.
