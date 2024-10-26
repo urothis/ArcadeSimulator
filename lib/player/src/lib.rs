@@ -72,11 +72,11 @@ fn setup(
                         ..default()
                     },
                     tonemapping: Tonemapping::TonyMcMapface,
-                    projection: PerspectiveProjection {
-                        fov: 90.0_f32.to_radians(),
-                        ..default()
-                    }
-                    .into(),
+                    //projection: PerspectiveProjection {
+                    //    fov: 90.0_f32.to_radians(),
+                    //    ..default()
+                    //}
+                    //.into(),
                     ..default()
                 },
                 BloomSettings::OLD_SCHOOL
