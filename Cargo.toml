@@ -4,7 +4,7 @@ default-members = [
     "bin/arcade",
 ]
 members = [
-    "bin/*", "lib/building",
+    "bin/*",
     "lib/*",
     "xtask"
 ]
